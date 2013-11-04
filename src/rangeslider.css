@@ -42,7 +42,9 @@
 }
 
 .vjs-hoverbox-RS {
-	margin: 50px solid red;
+	margin: 50px;
+	border-style: solid;
+	border-color: red;
 }
 /*Arrow and Handle*/
 .vjs-default-skin div.vjs-rangeslider-handle {

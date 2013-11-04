@@ -120,7 +120,7 @@ RangeSlider.prototype = {
 		this.ctp = this.components.ControlTimePanel;
 		this.ctpl = this.components.ControlTimePanelLeft = this.ctp.ControlTimePanelLeft;
 		this.ctpr = this.components.ControlTimePanelRight = this.ctp.ControlTimePanelRight;
-		this.hoverbox = this.components.HoverBox = this.box.HoverBox;
+		this.hoverbox = this.components.HoverBox = this.ctp.HoverBox;
 		
 	},
 	lock: function() {
@@ -976,6 +976,7 @@ videojs.ControlTimePanel.prototype.options_ = {
 	children: {
 		'ControlTimePanelLeft': {},
 		'ControlTimePanelRight': {},
+		'HoverBox': {}
 	}
 };
 
