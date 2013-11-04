@@ -851,7 +851,7 @@ videojs.HoverBox = videojs.Component.extend({
   /** @constructor */
 	init: function(player, options){
 		videojs.Component.call(this, player, options);
-		console.log('ran!');
+		console.log(this);
 	}
 });
 
@@ -865,7 +865,7 @@ videojs.HoverBox.prototype.options_ = {
 };
 
 videojs.HoverBox.prototype.createEl = function(){
-	return videojs.Component.prototype.createEl.call(this, 'div', {
+	return videojs.Component.prototype.createEl.call(this, 'button', {
 		className: 'vjs-hoverbox-RS',
 		innerHTML:  'Hello!!!'
 	});
@@ -894,6 +894,7 @@ videojs.TimePanel.prototype.options_ = {
 	children: {
 		'TimePanelLeft': {},
 		'TimePanelRight': {},
+		'HoverBox': {}
 	}
 };
 
