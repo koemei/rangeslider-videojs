@@ -41,7 +41,9 @@
 	background: linear-gradient(top, #FF6565, #300000);
 }
 
-
+.vjs-hoverbox-RS {
+	margin: 50px solid red;
+}
 /*Arrow and Handle*/
 .vjs-default-skin div.vjs-rangeslider-handle {
 	position: absolute;

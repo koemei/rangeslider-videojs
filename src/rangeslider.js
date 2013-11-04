@@ -120,6 +120,7 @@ RangeSlider.prototype = {
 		this.ctp = this.components.ControlTimePanel;
 		this.ctpl = this.components.ControlTimePanelLeft = this.ctp.ControlTimePanelLeft;
 		this.ctpr = this.components.ControlTimePanelRight = this.ctp.ControlTimePanelRight;
+		this.hoverbox = this.components.HoverBox = this.box.HoverBox;
 		
 	},
 	lock: function() {
@@ -839,6 +840,37 @@ videojs.SelectionBarRight.prototype.onMouseUp = function(event) {
 		this.pressed = false;
 	}
 };
+
+/**
+ * This is the hover box
+ * @param {videojs.Player|Object} player
+ * @param {Object=} options
+ * @constructor
+ */
+videojs.HoverBox = videojs.Component.extend({
+  /** @constructor */
+	init: function(player, options){
+		videojs.Component.call(this, player, options);
+		console.log('ran!');
+	}
+});
+
+videojs.HoverBox.prototype.init_ = function(){
+    	this.rs = this.player_.rangeslider;
+};
+
+videojs.HoverBox.prototype.options_ = {
+	children: {
+	}
+};
+
+videojs.HoverBox.prototype.createEl = function(){
+	return videojs.Component.prototype.createEl.call(this, 'div', {
+		className: 'vjs-hoverbox-RS',
+		innerHTML:  'Hello!!!'
+	});
+};
+
 
 
 /**
