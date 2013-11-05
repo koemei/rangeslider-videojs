@@ -9,10 +9,15 @@
 	<link href="http://vjs.zencdn.net/4.2/video-js.css" rel="stylesheet">
 	<script src="lib/video-js/video.min.js"></script>
 	
-	<!--RangeSlider Pluging-->
+	<!--RangeSlider Plugin-->
 	<script src="src/rangeslider.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<link href="build/rangeslider.min.css" rel="stylesheet">
-	
+	<link href="src/hoverbox.css" rel="stylesheet">
+
+	<!--HoverBox Plugin -->
+	<script src="src/hoverbox.js"></script>
+
     <!--Demo CSS-->
 	<link href="demo.css" rel="stylesheet">
 
@@ -35,6 +40,8 @@
 		var options ={hidden:false},
 			mplayer=videojs("vid1");
 			mplayer.rangeslider(options);
+			console.log(mplayer);
+			mplayer.hoverbox(options);
          
 		function playBetween(){
 			var start,end;
@@ -81,9 +88,6 @@
 				mplayer.showControlTime();
 			else
 				mplayer.hideControlTime();
-		}
-		function getValues(){
-			console.log(mplayer.currentTime());
 		}
 	</script>
     <div id="fieldSelection">
