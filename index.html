@@ -8,41 +8,54 @@
 	<!--video-js-->
 	<link href="http://vjs.zencdn.net/4.2/video-js.css" rel="stylesheet">
 	<script src="lib/video-js/video.min.js"></script>
-	
+
 	<!--RangeSlider Plugin-->
 	<script src="src/rangeslider.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<link href="build/rangeslider.min.css" rel="stylesheet">
-	<link href="src/hoverbox.css" rel="stylesheet">
+
+	<!--YouTube Plugin-->
+	<script src="lib/media.youtube.js"></script>
 
 	<!--HoverBox Plugin -->
 	<script src="src/hoverbox.js"></script>
+	<link href="src/hoverbox.css" rel="stylesheet">
 
-    <!--Demo CSS-->
+  <!--Demo CSS-->
 	<link href="demo.css" rel="stylesheet">
 
   </head>
 
   <body style="margin:10px">
-    <h1 class="title">Range Slider for video-js</h1>
+    <h1 class="title">Clip a learning moment</h1>
 
-	<video id="vid1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+<!-- 	<video id="vid1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
 	poster="http://video-js.zencoder.com/oceans-clip.png"
 	data-setup=''>
 		<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
 		<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
 		<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-		<track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
+		<track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><! // Tracks need an ending tag thanks to IE9 
+	</video> -->
+
+	<video 
+		id="vid1" 
+		src="http://www.youtube.com/watch?v=bTUrWYv2vtU" 
+		class="video-js vjs-default-skin" 
+		controls preload="none" 
+		poster="http://img.youtube.com/vi/bTUrWYv2vtU/0.jpg" 
+		width="640" height="360" 
+		data-setup='{ "techOrder": ["youtube"], "autoplay":false, "src": "http://www.youtube.com/watch?v=bTUrWYv2vtU" }'>
 	</video>
 	
 	<script>
 		//Example of options ={hidden:false,locked:true,panel:false}
-		var options ={hidden:false},
+		var options ={hidden:false, locked:true},
 			mplayer=videojs("vid1");
 			mplayer.rangeslider(options);
 			console.log(mplayer);
 			mplayer.hoverbox(options);
-         
+		
 		function playBetween(){
 			var start,end;
 			start = document.getElementById('Start').value;
