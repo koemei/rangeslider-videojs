@@ -1,0 +1,63 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', 'serve' ]
+2 info using npm@1.2.15
+3 info using node@v0.10.2
+4 verbose read json /usr/local/lib/package.json
+5 verbose read json /usr/local/lib/package.json
+6 verbose cache add [ 'serve', null ]
+7 verbose cache add name=undefined spec="serve" args=["serve",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'serve',
+8 verbose parsed url   path: 'serve',
+8 verbose parsed url   href: 'serve' }
+9 silly lockFile b88fb872-serve serve
+10 verbose lock serve /Users/andrewmagliozzi/.npm/b88fb872-serve.lock
+11 silly lockFile b88fb872-serve serve
+12 silly lockFile b88fb872-serve serve
+13 verbose addNamed [ 'serve', '' ]
+14 verbose addNamed [ null, '' ]
+15 silly lockFile f5f9b276-serve serve@
+16 verbose lock serve@ /Users/andrewmagliozzi/.npm/f5f9b276-serve.lock
+17 silly addNameRange { name: 'serve', range: '', hasData: false }
+18 verbose url raw serve
+19 verbose url resolving [ 'https://registry.npmjs.org/', './serve' ]
+20 verbose url resolved https://registry.npmjs.org/serve
+21 info trying registry request attempt 1 at 18:16:06
+22 http GET https://registry.npmjs.org/serve
+23 info retry will retry, error on last attempt: Error: connect ECONNREFUSED
+24 info trying registry request attempt 2 at 18:17:24
+25 http GET https://registry.npmjs.org/serve
+26 info retry will retry, error on last attempt: Error: connect ECONNREFUSED
+27 info trying registry request attempt 3 at 18:18:44
+28 http GET https://registry.npmjs.org/serve
+29 silly lockFile f5f9b276-serve serve@
+30 silly lockFile f5f9b276-serve serve@
+31 error Error: connect ECONNREFUSED
+31 error     at errnoException (net.js:878:11)
+31 error     at Object.afterConnect [as oncomplete] (net.js:869:19)
+31 error  { [Error: connect ECONNREFUSED]
+31 error   code: 'ECONNREFUSED',
+31 error   errno: 'ECONNREFUSED',
+31 error   syscall: 'connect' }
+32 error If you are behind a proxy, please make sure that the
+32 error 'proxy' config is set properly.  See: 'npm help config'
+33 error System Darwin 13.0.0
+34 error command "node" "/usr/local/bin/npm" "install" "-g" "serve"
+35 error cwd /Users/andrewmagliozzi/code/koemei/rangeslider-videojs
+36 error node -v v0.10.2
+37 error npm -v 1.2.15
+38 error syscall connect
+39 error code ECONNREFUSED
+40 error errno ECONNREFUSED
+41 error stack Error: connect ECONNREFUSED
+41 error stack     at errnoException (net.js:878:11)
+41 error stack     at Object.afterConnect [as oncomplete] (net.js:869:19)
+42 verbose exit [ 1, true ]
