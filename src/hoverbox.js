@@ -116,7 +116,6 @@ videojs.HoverBox.prototype.createEl = function(){
 		if (!this.fired) {
 			clearTimeout(this.timeout);
 		} else {
-			console.log('here');
 			this.fired = false;
 		}
 	}.bind(this);
