@@ -61,6 +61,8 @@ function HoverBox(player,options){
 
 	this.options = options;
 
+	this.fired = false;
+
 	this.init();
 }
 
@@ -98,10 +100,27 @@ videojs.HoverBox.prototype.options_ = {
 };
 
 videojs.HoverBox.prototype.createEl = function(){
-	return videojs.Component.prototype.createEl.call(this, 'button', {
-		className: 'vjs-hoverbox-RS',
-		innerHTML:  'Hello!!!'
+	this.element = videojs.Component.prototype.createEl.call(this, 'button', {
+		className: 'vjs-hoverbox',
+		innerHTML:  'hover over me'
 	});
+	this.element.onmouseover = function() {
+		this.timeout = setTimeout(function() {
+			if (!this.fired) {
+				this.fired = true;
+				console.log(this.player_.currentTime());
+			}
+		}.bind(this), 1000);
+	}.bind(this);
+	this.element.onmouseout = function() {
+		if (!this.fired) {
+			clearTimeout(this.timeout);
+		} else {
+			console.log('here');
+			this.fired = false;
+		}
+	}.bind(this);
+	return this.element;
 };
 
 

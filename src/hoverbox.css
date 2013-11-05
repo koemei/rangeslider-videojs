@@ -1,0 +1,17 @@
+.vjs-fade-in .vjs-fade-out {
+	visibility: visible !important;
+	opacity: 1 !important;
+	transition-delay: 0s !important;
+}
+
+.vjs-hoverbox {
+	margin-top: -250px;
+	margin-left: 330px;
+	padding: 50px;
+	float: left;
+	font-size: 24px;
+}
+
+.vjs-hoverbox:hover{
+	color: red;
+}
