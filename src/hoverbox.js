@@ -76,6 +76,23 @@
 		},
 	};
 
+	// -- Helper function for hoverstate
+
+	var countDown = function (startTime, el){
+		console.log('selector', el);
+		if (startTime > 0) {
+			console.log(startTime);
+			el.innerHTML = "clip starting in " + startTime-- + " seconds";
+		}
+		else if (startTime === 0) {
+			console.log(startTime);
+			el.innerHTML = 'starting clip';
+		} else {
+			el.innerHTML = 'click to end clip';
+		}
+	};
+
+
 	/**
 	 * This is the hover box
 	 * @param {videojs.Player|Object} player
@@ -105,35 +122,35 @@
 			innerHTML:  'hover over me'
 		});
 		this.element.onmouseover = function() {
+			this.interval = setInterval(countDown(3, this.element), 1000);
 			this.timeout = setTimeout(function() {
 				if (!this.fired) {
 					this.fired = true;
 					// logic to start clips three seconds before hover begins 
 					if (this.player_.currentTime() < 5) { 
-						console.log("first", this);
 						this.startTime = 0;
-						alert(this.startTime);
 					} else {
 						this.startTime = this.player_.currentTime() - 5;
-						alert(this.startTime);
 					}
-					this.element.innerHTML = 'click to end clip';
 				}
-			}.bind(this), 2000);
+			}.bind(this), 3000);
+		}.bind(this);
+		this.element.onmouseout = function(event) {
+			if (!this.fired) {
+				clearTimeout(this.timeout);
+			}	else {
+				clearInterval(this.interval);
+				this.element.innerHTML = 'hover over me';
+			}
 		}.bind(this);
 		this.element.onclick = function(event) {
 			event.preventDefault();
-			if (!this.fired) {
-				clearTimeout(this.timeout);
-			} else {
-				this.endTime = this.player_.currentTime();
-				alert(this.endTime);
-				this.fired = false;
-				setTimeout(function () { 
-					this.element.innerHTML = 'hover over me';
-					console.log("second", this);
-				}.bind(this), 300);
-			}
+			this.endTime = this.player_.currentTime();
+			this.fired = false;
+			setTimeout(function () { 
+				this.element.innerHTML = 'hover over me';
+				console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
+			}.bind(this), 300);
 		}.bind(this);
 		return this.element;
 	};
