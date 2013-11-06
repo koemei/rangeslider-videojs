@@ -7,7 +7,7 @@
 
 	<!--video-js-->
 	<link href="http://vjs.zencdn.net/4.2/video-js.css" rel="stylesheet">
-	<script src="lib/video-js/video.min.js"></script>
+	<script src="lib/video-js/video.dev.js"></script>
 
 	<!--RangeSlider Plugin-->
 	<script src="src/rangeslider.js"></script>
@@ -40,7 +40,7 @@
 
 	<video 
 		id="vid1" 
-		src="http://www.youtube.com/watch?v=bTUrWYv2vtU" 
+		src="" 
 		class="video-js vjs-default-skin" 
 		controls preload="none" 
 		poster="http://img.youtube.com/vi/bTUrWYv2vtU/0.jpg" 
@@ -50,12 +50,12 @@
 	
 	<script>
 		//Example of options ={hidden:false,locked:true,panel:false}
-		var options ={hidden:false, locked:true},
-			mplayer=videojs("vid1");
-			mplayer.rangeslider(options);
-			console.log(mplayer);
-			mplayer.hoverbox(options);
-		
+		// var options ={hidden:false, locked:true},
+		// 	mplayer=videojs("vid1");
+		// 	mplayer.rangeslider(options);
+		// 	console.log(mplayer);
+		// 	mplayer.hoverbox(options);
+
 		function playBetween(){
 			var start,end;
 			start = document.getElementById('Start').value;

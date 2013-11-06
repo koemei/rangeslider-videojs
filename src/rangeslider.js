@@ -77,13 +77,13 @@ function RangeSlider(player,options){
 		options.locked = false; // lock slider handles
 		
 	if(!options.hasOwnProperty('hidden')) 
-		options.hidden = true; // hide slider handles
+		options.hidden = false; // hide slider handles
 		
 	if(!options.hasOwnProperty('panel')) 
 		options.panel = true; // Show Second Panel
 		
 	if(!options.hasOwnProperty('controlTime')) 
-		options.controlTime = true; // Show Control Time to set the arrows in the edition
+		options.controlTime = false; // Show Control Time to set the arrows in the edition
 	
 	this.options = options;
 	
@@ -94,6 +94,7 @@ function RangeSlider(player,options){
 RangeSlider.prototype = {
 	/*Constructor*/
 	init:function(){
+		debugger;
 		var player = this.player || {};
 		console.log(player);
 		
