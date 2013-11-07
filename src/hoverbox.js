@@ -9,11 +9,11 @@
 			var plugin = player.hoverbox;
 			//All components will be initialize after they have been loaded by videojs
 			for (var index in plugin.components) {
-				plugin.components[index].init_();
+				// plugin.components[index].init_();  // this was causing failures so I commented it out.
 			}
 			
-			plugin._reset();
-			player.trigger('loadedHoverBox'); //Let know if the Range Slider DOM is ready
+			// plugin._reset();
+			player.trigger('loadedHoverBox'); //Let know if the DOM is ready
 		}
 		if (player.techName == 'Youtube'){
 			//Detect youtube problems
@@ -42,9 +42,9 @@
 			player.one('playing', initialVideoFinished);
 		}
 		
-		
 		console.log("Loaded Plugin HoverBox");
 	}
+
 	videojs.plugin('hoverbox', HoverBox_);
 
 
@@ -57,11 +57,9 @@
 		
 		this.components = {}; // holds any custom components we add to the player
 
-		options = options || {}; // plugin options	
+		options = options || {}; // plugin options - of which we have none
 
 		this.options = options;
-
-		this.fired = false;
 
 		this.init();
 	}
@@ -72,24 +70,8 @@
 		init:function(){
 			var player = this.player || {};
 
-			var hoverBox = this.components.HoverBox = player.hoverbox;
+			var hoverBox = this.components.HoverBox = player.hoverbox; // what exactly is happening here?  Is it necessary?
 		},
-	};
-
-	// -- Helper function for hoverstate
-
-	var countDown = function (startTime, el){
-		console.log('selector', el);
-		if (startTime > 0) {
-			console.log(startTime);
-			el.innerHTML = "clip starting in " + startTime-- + " seconds";
-		}
-		else if (startTime === 0) {
-			console.log(startTime);
-			el.innerHTML = 'starting clip';
-		} else {
-			el.innerHTML = 'click to end clip';
-		}
 	};
 
 
@@ -103,12 +85,39 @@
 	  /** @constructor */
 		init: function(player, options){
 			videojs.Component.call(this, player, options);
-			console.log("this", this);
 		}
 	});
 
+		// -- Helper variables and function for mouseover box countdown
+	videojs.HoverBox.prototype.startTime = 3;
+
+	videojs.HoverBox.prototype.fired = false;
+
+	videojs.HoverBox.prototype.interval = undefined;
+
+	videojs.HoverBox.prototype.timeout = undefined;
+	
+	videojs.HoverBox.prototype.countDown = function (el) {
+		console.log('101 el', el);  // TODO: remove this
+		debugger;
+		if (this.startTime > 0) {
+			$(el).addClass('counting');
+			$(el).text("clipping in " + this.startTime-- + " seconds");
+		}
+		else if (this.startTime === 0) {
+			$(el).text('starting clip');
+			this.startTime--;
+		} else {
+			$(el).removeClass('counting');
+			$(el).addClass('active');
+			$(el).text('click to end clip');
+			clearInterval(this.interval);
+			this.startTime = 3;
+		}
+	};
+
 	videojs.HoverBox.prototype.init_ = function(){
-	    	this.rs = this.player_.rangeslider;
+	    	this.hb = this.player_.hoverbox; // this used to say rangeslider but somehow it worked...
 	};
 
 	videojs.HoverBox.prototype.options_ = {
@@ -121,8 +130,10 @@
 			className: 'vjs-hoverbox',
 			innerHTML:  'hover over me'
 		});
+
 		this.element.onmouseover = function() {
-			this.interval = setInterval(countDown(3, this.element), 1000);
+			this.interval = setInterval(this.countDown(this.element), 1000);
+			console.log('interval 135', this.interval);  // TODO: remove this
 			this.timeout = setTimeout(function() {
 				if (!this.fired) {
 					this.fired = true;
@@ -135,22 +146,30 @@
 				}
 			}.bind(this), 3000);
 		}.bind(this);
+
 		this.element.onmouseout = function(event) {
 			if (!this.fired) {
+				console.log('mouseout');  // TODO: remove this
 				clearTimeout(this.timeout);
 			}	else {
+				console.log('line 154: ', this.interval);  // TODO: remove this
 				clearInterval(this.interval);
 				this.element.innerHTML = 'hover over me';
+				this.startTime = 3;
 			}
 		}.bind(this);
-		this.element.onclick = function(event) {
+
+		this.element.onclick = function(event) {  // TODO: eventually we'll need to make a post request to the Koemei API in this method
 			event.preventDefault();
-			this.endTime = this.player_.currentTime();
-			this.fired = false;
-			setTimeout(function () { 
-				this.element.innerHTML = 'hover over me';
-				console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
-			}.bind(this), 300);
+			if ( $(event.srcElement).hasClass('active') ) {
+				this.endTime = this.player_.currentTime();
+				this.fired = false;
+				$(this.element).removeClass('active');
+				setTimeout(function () { 
+					this.element.innerHTML = 'hover over me';
+					console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
+				}.bind(this), 300);
+			}
 		}.bind(this);
 		return this.element;
 	};

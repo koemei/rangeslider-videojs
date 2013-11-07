@@ -94,7 +94,6 @@ function RangeSlider(player,options){
 RangeSlider.prototype = {
 	/*Constructor*/
 	init:function(){
-		debugger;
 		var player = this.player || {};
 		console.log(player);
 		
