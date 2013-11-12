@@ -2,7 +2,7 @@
 	function HoverBox_(options){
 		var player = this;
 		
-		player.hoverbox=new HoverBox(player, options);
+		player.hoverbox = new HoverBox(player, options);
 		
 		//When the DOM and the video media is loaded
 		function initialVideoFinished(event) {
@@ -91,7 +91,7 @@
 		// -- Helper variables and function for mouseover box countdown
 	videojs.HoverBox.prototype.startTime = 3;
 
-	videojs.HoverBox.prototype.fired = false;
+	videojs.HoverBox.prototype.set = false;
 
 	videojs.HoverBox.prototype.interval = undefined;
 
@@ -134,9 +134,11 @@
 		this.element.onmouseover = function() {
 			this.interval = setInterval(this.countDown(this.element), 1000);
 			console.log('interval 135', this.interval);  // TODO: remove this
+			console.log('time 136', this.player_.currentTime());  // TODO: remove this
 			this.timeout = setTimeout(function() {
-				if (!this.fired) {
-					this.fired = true;
+				if (!this.set) {
+					this.set = true;
+					console.log('set is now true');  // TODO: remove this
 					// logic to start clips three seconds before hover begins 
 					if (this.player_.currentTime() < 5) { 
 						this.startTime = 0;
@@ -148,14 +150,20 @@
 		}.bind(this);
 
 		this.element.onmouseout = function(event) {
-			if (!this.fired) {
+			if (!this.set) {
 				console.log('mouseout');  // TODO: remove this
 				clearTimeout(this.timeout);
+				this.set = false;
+				console.log('set is now false');  // TODO: remove this
+				$(this).removeClass('counting');
 			}	else {
 				console.log('line 154: ', this.interval);  // TODO: remove this
 				clearInterval(this.interval);
 				this.element.innerHTML = 'hover over me';
 				this.startTime = 3;
+				this.set = false;
+				console.log('set is now false');  // TODO: remove this
+				$(this).removeClass('counting');
 			}
 		}.bind(this);
 
@@ -163,7 +171,7 @@
 			event.preventDefault();
 			if ( $(event.srcElement).hasClass('active') ) {
 				this.endTime = this.player_.currentTime();
-				this.fired = false;
+				this.set = false;
 				$(this.element).removeClass('active');
 				setTimeout(function () { 
 					this.element.innerHTML = 'hover over me';
