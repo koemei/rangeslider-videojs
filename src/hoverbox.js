@@ -89,7 +89,7 @@
 	});
 
 		// -- Helper variables and function for mouseover box countdown
-	videojs.HoverBox.prototype.startTime = 3;
+	videojs.HoverBox.prototype.timer = 3;
 
 	videojs.HoverBox.prototype.set = false;
 
@@ -99,20 +99,19 @@
 	
 	videojs.HoverBox.prototype.countDown = function (el) {
 		console.log('101 el', el);  // TODO: remove this
-		debugger;
-		if (this.startTime > 0) {
+		if (this.timer > 0) {
 			$(el).addClass('counting');
-			$(el).text("clipping in " + this.startTime-- + " seconds");
+			$(el).text("clipping in " + this.timer-- + " seconds");
 		}
-		else if (this.startTime === 0) {
+		else if (this.timer === 0) {
 			$(el).text('starting clip');
-			this.startTime--;
+			this.timer--;
 		} else {
 			$(el).removeClass('counting');
 			$(el).addClass('active');
 			$(el).text('click to end clip');
 			clearInterval(this.interval);
-			this.startTime = 3;
+			this.timer = 3;
 		}
 	};
 
@@ -132,14 +131,16 @@
 		});
 
 		this.element.onmouseover = function() {
-			this.interval = setInterval(this.countDown(this.element), 1000);
+			this.interval = setInterval(function() {
+				this.countDown.call(this, this.element);
+			}.bind(this), 1000);
 			console.log('interval 135', this.interval);  // TODO: remove this
-			console.log('time 136', this.player_.currentTime());  // TODO: remove this
+			console.log('time now', this.player_.currentTime());  // TODO: remove this
 			this.timeout = setTimeout(function() {
 				if (!this.set) {
 					this.set = true;
 					console.log('set is now true');  // TODO: remove this
-					// logic to start clips three seconds before hover begins 
+					// logic to start clips two seconds before hover  
 					if (this.player_.currentTime() < 5) { 
 						this.startTime = 0;
 					} else {
@@ -150,20 +151,14 @@
 		}.bind(this);
 
 		this.element.onmouseout = function(event) {
+			console.log('mouseout');  // TODO: remove this
+			$(this).removeClass('counting');
+			this.set = false;
+			this.timer = 3;
+			this.element.innerHTML = 'hover over me';
+			clearInterval(this.interval);
 			if (!this.set) {
-				console.log('mouseout');  // TODO: remove this
 				clearTimeout(this.timeout);
-				this.set = false;
-				console.log('set is now false');  // TODO: remove this
-				$(this).removeClass('counting');
-			}	else {
-				console.log('line 154: ', this.interval);  // TODO: remove this
-				clearInterval(this.interval);
-				this.element.innerHTML = 'hover over me';
-				this.startTime = 3;
-				this.set = false;
-				console.log('set is now false');  // TODO: remove this
-				$(this).removeClass('counting');
 			}
 		}.bind(this);
 
