@@ -1,9 +1,9 @@
 (function (){
 	function HoverBox_(options){
 		var player = this;
-		
+
 		player.hoverbox = new HoverBox(player, options);
-		
+
 		//When the DOM and the video media is loaded
 		function initialVideoFinished(event) {
 			var plugin = player.hoverbox;
@@ -11,7 +11,7 @@
 			for (var index in plugin.components) {
 				// plugin.components[index].init_();  // this was causing failures so I commented it out.
 			}
-			
+
 			// plugin._reset();
 			player.trigger('loadedHoverBox'); //Let know if the DOM is ready
 		}
@@ -41,7 +41,7 @@
 		}else{
 			player.one('playing', initialVideoFinished);
 		}
-		
+
 		console.log("Loaded Plugin HoverBox");
 	}
 
@@ -52,9 +52,9 @@
 	//-- Plugin
 	function HoverBox(player,options){
 		var player = player || this;
-		
+
 		this.player = player;
-		
+
 		this.components = {}; // holds any custom components we add to the player
 
 		options = options || {}; // plugin options - of which we have none
@@ -96,7 +96,7 @@
 	videojs.HoverBox.prototype.interval = undefined;
 
 	videojs.HoverBox.prototype.timeout = undefined;
-	
+
 	videojs.HoverBox.prototype.countDown = function (el) {
 		console.log('101 el', el);  // TODO: remove this
 		if (this.timer > 0) {
@@ -140,8 +140,8 @@
 				if (!this.set) {
 					this.set = true;
 					console.log('set is now true');  // TODO: remove this
-					// logic to start clips two seconds before hover  
-					if (this.player_.currentTime() < 5) { 
+					// logic to start clips two seconds before hover
+					if (this.player_.currentTime() < 5) {
 						this.startTime = 0;
 					} else {
 						this.startTime = this.player_.currentTime() - 5;
@@ -168,7 +168,7 @@
 				this.endTime = this.player_.currentTime();
 				this.set = false;
 				$(this.element).removeClass('active');
-				setTimeout(function () { 
+				setTimeout(function () {
 					this.element.innerHTML = 'hover over me';
 					console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
 				}.bind(this), 300);
