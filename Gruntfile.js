@@ -44,15 +44,6 @@ module.exports = function(grunt) {
       }
     },
 
-    concurrent: {
-      dev: {
-        tasks: ['watch']
-      },
-      compile: {
-        tasks: ['stylus']
-      }
-    },
-
     notify: {
       compiled: {
         options: {
@@ -76,13 +67,13 @@ module.exports = function(grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.registerTask("compile", [
-    "concurrent:compile"
+    "stylus"
   ]);
 
   grunt.registerTask("default", [
     "compile",
     "connect",
-    "concurrent:dev"
+    "watch"
   ]);
 
   return grunt;

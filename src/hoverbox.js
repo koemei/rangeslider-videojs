@@ -21,8 +21,10 @@
 				switch (player.error) {
 					case 2:
 						alert("The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.");
+            break;
 					case 5:
 						alert("The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.");
+            break;
 					case 100:
 						alert("The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.");
 						break;
@@ -51,9 +53,9 @@
 
 	//-- Plugin
 	function HoverBox(player,options){
-		var player = player || this;
+		var vjsPlayer = player || this;
 
-		this.player = player;
+		this.player = vjsPlayer;
 
 		this.components = {}; // holds any custom components we add to the player
 
@@ -82,7 +84,7 @@
 	 * @constructor
 	 */
 	videojs.HoverBox = videojs.Component.extend({
-	  /** @constructor */
+		/** @constructor */
 		init: function(player, options){
 			videojs.Component.call(this, player, options);
 		}
@@ -97,40 +99,63 @@
 
 	videojs.HoverBox.prototype.timeout = undefined;
 
-	videojs.HoverBox.prototype.countDown = function (el) {
-		console.log('101 el', el);  // TODO: remove this
+	videojs.HoverBox.prototype.countDown = function () {
+		// console.log('101 el', el);
+
+    el = this.element;
+    elCounter = this.elementCounter;
+
 		if (this.timer > 0) {
-			$(el).addClass('counting');
-			$(el).text("clipping in " + this.timer-- + " seconds");
+			$(el)
+				.removeClass('active')
+				.addClass('counting');
+			$(elCounter).html("— " + this.timer-- + " —");
 		}
 		else if (this.timer === 0) {
-			$(el).text('starting clip');
+			$(elCounter).html('highlighting');
 			this.timer--;
 		} else {
-			$(el).removeClass('counting');
-			$(el).addClass('active');
-			$(el).text('click to end clip');
+			$(el)
+        .removeClass('counting')
+        .addClass('counting-done');
+			$(elCounter).text('done!');
 			clearInterval(this.interval);
 			this.timer = 3;
 		}
 	};
 
-	videojs.HoverBox.prototype.init_ = function(){
-	    	this.hb = this.player_.hoverbox; // this used to say rangeslider but somehow it worked...
-	};
+  videojs.HoverBox.prototype.reset = function(){
+    $(this.elementCounter).html("highlight");
 
-	videojs.HoverBox.prototype.options_ = {
-		children: {
-		}
-	};
+    return this;
+  };
 
-	videojs.HoverBox.prototype.createEl = function(){
-		this.element = videojs.Component.prototype.createEl.call(this, 'button', {
-			className: 'vjs-hoverbox',
-			innerHTML:  'hover over me'
-		});
+  videojs.HoverBox.prototype.init_ = function(){
+    this.hb = this.player_.hoverbox; // this used to say rangeslider but somehow it worked...
 
-		this.element.onmouseover = function() {
+  };
+
+  videojs.HoverBox.prototype.options_ = {
+    children: {
+    }
+  };
+
+  videojs.HoverBox.prototype.createEl = function(){
+    this.element = videojs.Component.prototype.createEl.call(this, 'div', {
+      className: 'vjs-hoverbox'
+    });
+
+    this.elementCounter = videojs.Component.prototype.createEl.call(this, 'span', {
+      className: 'vjs-hoverbox-counter'
+    });
+
+    $(this.element).append(this.elementCounter);
+
+    this.reset.call(this);
+
+    this.element.onmouseenter = function() {
+    	$(this.element).removeClass('counting-done');
+
 			this.interval = setInterval(function() {
 				this.countDown.call(this, this.element);
 			}.bind(this), 1000);
@@ -150,12 +175,12 @@
 			}.bind(this), 3000);
 		}.bind(this);
 
-		this.element.onmouseout = function(event) {
+		this.element.onmouseleave = function(event) {
 			console.log('mouseout');  // TODO: remove this
-			$(this).removeClass('counting');
+			$(this.element).removeClass('counting');
 			this.set = false;
 			this.timer = 3;
-			this.element.innerHTML = 'hover over me';
+			this.reset.call(this);
 			clearInterval(this.interval);
 			if (!this.set) {
 				clearTimeout(this.timeout);
@@ -167,9 +192,9 @@
 			if ( $(event.srcElement).hasClass('active') ) {
 				this.endTime = this.player_.currentTime();
 				this.set = false;
-				$(this.element).removeClass('active');
+				this.reset.call(this);
 				setTimeout(function () {
-					this.element.innerHTML = 'hover over me';
+					$(this.element).html(this.elementCounter);
 					console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
 				}.bind(this), 300);
 			}
