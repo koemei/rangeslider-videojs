@@ -1,10 +1,30 @@
 {
-    "name": "Koemei",
-    "version": "0.0.1",
-    "devDependencies": {
-        "mocha": "*",
-        "chai" : "*",
-        "requirejs": "*",
-        "mocha-phantomjs": "*"
-    }
+  "name": "Koemei",
+  "version": "0.0.1",
+  "description": "Rangeslider-videojs ================== ##Ranger Slider Plugin for Video JS Player",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koemei/rangeslider-videojs.git"
+  },
+  "author": "Koemei",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/koemei/rangeslider-videojs/issues"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "requirejs": "*",
+    "mocha-phantomjs": "*",
+    "grunt": "~0.4.1",
+    "matchdep": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-notify": "~0.2.16",
+    "grunt-contrib-stylus": "~0.10.0",
+    "grunt-concurrent": "~0.4.1",
+    "grunt-contrib-connect": "~0.5.0"
+  }
 }
