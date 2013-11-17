@@ -3,16 +3,13 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>JS RangeSlider Test</title>
+    <title>Clipping Tool Test</title>
 
 	<!--video-js-->
 	<link href="http://vjs.zencdn.net/4.2/video-js.css" rel="stylesheet">
 	<script src="lib/video-js/video.dev.js"></script>
 
-	<!--RangeSlider Plugin-->
-	<script src="src/rangeslider.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<link href="build/rangeslider.min.css" rel="stylesheet">
 
 	<!--YouTube Plugin-->
 	<script src="lib/media.youtube.js"></script>
@@ -20,6 +17,10 @@
 	<!--HoverBox Plugin -->
 	<script src="src/hoverbox.js"></script>
 	<link href="src/hoverbox.css" rel="stylesheet">
+
+	<!--RangeSlider Plugin-->
+	<script src="src/rangeslider.js"></script>
+	<link href="build/rangeslider.min.css" rel="stylesheet">
 
   <!--Demo CSS-->
 	<link href="demo.css" rel="stylesheet">
@@ -29,65 +30,64 @@
   <body style="margin:10px">
     <h1 class="title">Clip a learning moment</h1>
 
-<!-- 	<video id="vid1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
+<video id="vid1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264"
 	poster="http://video-js.zencoder.com/oceans-clip.png"
 	data-setup=''>
 		<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
 		<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
 		<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-		<track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><! // Tracks need an ending tag thanks to IE9 
-	</video> -->
+		<track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track>
+	</video>
 
-	<video 
+<!-- 	<video 
 		id="vid1" 
 		src="" 
 		class="video-js vjs-default-skin" 
-		controls preload="none" 
+		controls preload="auto"
 		poster="http://img.youtube.com/vi/bTUrWYv2vtU/0.jpg" 
 		width="640" height="360" 
 		data-setup='{ "techOrder": ["youtube", "html5"], "autoplay":false, "src": "http://www.youtube.com/watch?v=bTUrWYv2vtU" }'>
-	</video>
+	</video> -->
 	
 	<script>
 
-	$( document ).ready(function() {
+		$( document ).ready(function() {
 
-		var domain = $(location).attr('href');
+			var domain = $(location).attr('href');
 
-		var playClip = function(url) {
-			var arr = url.split('=');
-			var start = parseFloat(arr[1]);
-			var end = parseFloat(arr[2]);
-			console.log(start, end);
-			console.log(mplayer);
-			mplayer.playBetween(start,end)
-		};
+			var playClip = function(url) {
+				var arr = url.split('=');
+				var start = parseFloat(arr[1]);
+				var end = parseFloat(arr[2]);
+				console.log(start, end);
+				console.log(mplayer);
+				mplayer.playBetween(start,end)
+			};
 
-		if (domain.indexOf('?start') < domain.indexOf('&end')) {
-			suffix = domain.split('/').pop();
-			playClip(suffix);
-		}
+			if (domain.indexOf('?start') < domain.indexOf('&end')) {
+				suffix = domain.split('/').pop();
+				playClip(suffix);
+			}
 
 
-	});
+		});
 		//Example of options ={hidden:false,locked:true,panel:false}
-		var options ={hidden:false, locked:true},
-			mplayer=videojs("vid1");
-			mplayer.rangeslider(options);
-			mplayer.hoverbox();
+		//var options = {hidden:false, locked:true, controls:"controls"};
+		var	mplayer = videojs("vid1");
+		mplayer.hoverbox();
+//		mplayer.rangeslider();
 
 		function playBetween(){
-			var start,end;
-			start = document.getElementById('Start').value;
-			end = document.getElementById('End').value;
+			var start = document.getElementById('Start').value,
+				end = document.getElementById('End').value;
 			mplayer.playBetween(start,end);
 		}
 
-    function loopBetween() {
-        var start = document.getElementById('Start').value;
-        var end = document.getElementById('End').value;
-        mplayer.loopBetween(start, end);
-    }
+	    function loopBetween() {
+	        var start = document.getElementById('Start').value;
+	        var end = document.getElementById('End').value;
+	        mplayer.loopBetween(start, end);
+	    }
 
 		function getValues(){
 			var values = mplayer.getValueSlider();
