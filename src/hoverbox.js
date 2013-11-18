@@ -189,7 +189,7 @@
 
 		this.element.onclick = function(event) {  // TODO: eventually we'll need to make a post request to the Koemei API in this method
 			event.preventDefault();
-			if ( $(event.srcElement).hasClass('active') ) {
+			if ( $(event.srcElement).hasClass('counting-done') ) {
 				this.endTime = this.player_.currentTime();
 				this.set = false;
 				this.reset.call(this);
