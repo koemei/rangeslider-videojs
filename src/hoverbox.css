@@ -79,27 +79,27 @@
   opacity: 0.8;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
   filter: alpha(opacity=80);
-  -webkit-animation: fadeIn 4s ease-in 0s infinite alternate, fadeIn 1s ease-in 0s infinite reverse;
-  -moz-animation: fadeIn 4s ease-in 0s infinite alternate, fadeIn 1s ease-in 0s infinite reverse;
-  -o-animation: fadeIn 4s ease-in 0s infinite alternate, fadeIn 1s ease-in 0s infinite reverse;
-  -ms-animation: fadeIn 4s ease-in 0s infinite alternate, fadeIn 1s ease-in 0s infinite reverse;
-  animation: fadeIn 4s ease-in 0s infinite alternate, fadeIn 1s ease-in 0s infinite reverse;
+  -webkit-animation: fadeIn 0.5s ease-in 0s infinite alternate, fadeIn 0.3s ease-in 0s infinite reverse;
+  -moz-animation: fadeIn 0.5s ease-in 0s infinite alternate, fadeIn 0.3s ease-in 0s infinite reverse;
+  -o-animation: fadeIn 0.5s ease-in 0s infinite alternate, fadeIn 0.3s ease-in 0s infinite reverse;
+  -ms-animation: fadeIn 0.5s ease-in 0s infinite alternate, fadeIn 0.3s ease-in 0s infinite reverse;
+  animation: fadeIn 0.5s ease-in 0s infinite alternate, fadeIn 0.3s ease-in 0s infinite reverse;
 }
 .vjs-hoverbox.counting:after {
   visibility: visible;
-  -webkit-animation: fillIn 4s ease-out 0 1 alternate;
-  -moz-animation: fillIn 4s ease-out 0 1 alternate;
-  -o-animation: fillIn 4s ease-out 0 1 alternate;
-  -ms-animation: fillIn 4s ease-out 0 1 alternate;
-  animation: fillIn 4s ease-out 0 1 alternate;
+  -webkit-animation: fillIn 0.5s ease-out 0 1 alternate;
+  -moz-animation: fillIn 0.5s ease-out 0 1 alternate;
+  -o-animation: fillIn 0.5s ease-out 0 1 alternate;
+  -ms-animation: fillIn 0.5s ease-out 0 1 alternate;
+  animation: fillIn 0.5s ease-out 0 1 alternate;
 }
 .vjs-hoverbox.counting:before {
   visibility: visible;
-  -webkit-animation: pulseRotate 1s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
-  -moz-animation: pulseRotate 1s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
-  -o-animation: pulseRotate 1s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
-  -ms-animation: pulseRotate 1s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
-  animation: pulseRotate 1s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
+  -webkit-animation: pulseRotate 3s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
+  -moz-animation: pulseRotate 3s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
+  -o-animation: pulseRotate 3s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
+  -ms-animation: pulseRotate 3s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
+  animation: pulseRotate 3s cubic-bezier(0.1, 0.7, 1, 0.2) infinite;
 }
 .vjs-hoverbox-counter {
   position: absolute;
