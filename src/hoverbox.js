@@ -91,7 +91,9 @@
 	});
 
 		// -- Helper variables and function for mouseover box countdown
-	videojs.HoverBox.prototype.timer = 3;
+	videojs.HoverBox.prototype.timer = 1.5;
+
+	videojs.HoverBox.prototype.duration = 1.5;
 
 	videojs.HoverBox.prototype.set = false;
 
@@ -100,32 +102,36 @@
 	videojs.HoverBox.prototype.timeout = undefined;
 
 	videojs.HoverBox.prototype.countDown = function () {
-		// console.log('101 el', el);
+		var lex = this;
 
     el = this.element;
+
     elCounter = this.elementCounter;
 
 		if (this.timer > 0) {
 			$(el)
 				.removeClass('active')
 				.addClass('counting');
-			$(elCounter).html("— " + this.timer-- + " —");
+			$(elCounter).html("highlighting");
+			this.timer -= 0.5;
 		}
 		else if (this.timer === 0) {
-			$(elCounter).html('highlighting');
-			this.timer--;
+			$(elCounter).html('got it!');
+			this.timer -= 0.5;
 		} else {
-			$(el)
-        .removeClass('counting')
-        .addClass('counting-done');
-			$(elCounter).text('done!');
 			clearInterval(this.interval);
-			this.timer = 3;
+			setTimeout(function(){
+				$(el)
+					.removeClass('counting')
+					.addClass('counting-done');
+				lex.reset.call(lex);
+			}, 1000);
 		}
 	};
 
   videojs.HoverBox.prototype.reset = function(){
     $(this.elementCounter).html("highlight");
+    this.timer = this.duration;
 
     return this;
   };
@@ -158,7 +164,7 @@
 
 			this.interval = setInterval(function() {
 				this.countDown.call(this, this.element);
-			}.bind(this), 1000);
+			}.bind(this), 500);
 			console.log('interval 135', this.interval);  // TODO: remove this
 			console.log('time now', this.player_.currentTime());  // TODO: remove this
 			this.timeout = setTimeout(function() {
@@ -172,14 +178,13 @@
 						this.startTime = this.player_.currentTime() - 5;
 					}
 				}
-			}.bind(this), 3000);
+			}.bind(this), this.duration);
 		}.bind(this);
 
 		this.element.onmouseleave = function(event) {
 			console.log('mouseout');  // TODO: remove this
 			$(this.element).removeClass('counting');
 			this.set = false;
-			this.timer = 3;
 			this.reset.call(this);
 			clearInterval(this.interval);
 			if (!this.set) {
