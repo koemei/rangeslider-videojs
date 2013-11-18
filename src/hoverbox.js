@@ -116,7 +116,7 @@
 			this.timer -= 0.5;
 		}
 		else if (this.timer === 0) {
-			$(elCounter).html('highlighted!');
+			$(elCounter).html('got it!');
 			this.timer -= 0.5;
 		} else {
 			clearInterval(this.interval);
