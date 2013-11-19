@@ -1,9 +1,16 @@
-// var page = require('webpage').create();
- 
-//     page.open('http://net.tutsplus.com', function (s) {
-//         console.log(s);
-//         phantom.exit();
-//     });
+var system = require('system'),
+    page = require('webpage').create();
+
+
+    page.open(localhost:3000, function (status) {
+    page.evaluate(function () {
+        return document.title;
+    }, function(result){
+        console.log('Page title is ' + title);
+    }); 
+});
+
+
 describe("DOM Tests", function () {
 
     var el = document.createElement("div");
@@ -28,4 +35,6 @@ describe("DOM Tests", function () {
     it("has the right background", function () {
         expect(myEl.style.background).to.equal("rgb(204, 204, 204)");
     });
+
+    phantom.exit();
 });
