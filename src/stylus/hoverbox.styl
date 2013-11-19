@@ -1,0 +1,130 @@
+@import 'nib'
+
+// ------------------------------------------------------------------
+// HOVERBOX CONFIG
+fontSize       = 10px
+lineHeight     = fontSize * 1.5
+hbBorder       = 5px
+hbWidth        = 100px
+hbHeight       = hbWidth
+hbRadius       = hbWidth/2
+hbMarkerWidth  = 5px
+hbMarkerHeight = 2px
+hbRadiusMarker = hbRadius - (hbMarkerHeight/2)
+
+colorMain      = #3f4a53
+colorLight     = #fff
+
+// ------------------------------------------------------------------
+// ANIMATION
+@keyframes fadeIn
+  0%
+    background: rgba(colorLight, 0.1)
+    border-color: rgba(colorLight, 0.2)
+    box-shadow: 0 0 (hbRadius/2) 0 rgba(colorLight, 0.1)
+
+  100%
+    background-color: rgba(colorLight, 0.5)
+    border-color: rgba(colorLight, 0.8)
+    box-shadow: 0 0 (hbRadius/2) 0 rgba(colorLight, 0.8)
+
+@keyframes pulseRotate
+  0%
+    opacity: 0.2
+    box-shadow: 0 0 1px 1px colorLight
+    transform: rotate(0deg)
+
+  100%
+    opacity: 0.8
+    transform: rotate(360deg)
+    box-shadow: 0 0 15px 5px colorLight
+
+@keyframes fillIn
+  0%
+    box-shadow: 0 0 0 0 rgba(colorLight, 0.15)
+
+  100%
+    box-shadow: 0 0 0 (hbRadius - hbBorder) rgba(colorLight, 0.15)
+
+// ------------------------------------------------------------------
+// MARKER
+
+hbMarker()
+  position: absolute
+  top: 0
+  left: 50%
+  display: block
+  content: ""
+  width: hbMarkerWidth
+  height: hbMarkerHeight
+  transform-origin: 50% hbRadiusMarker
+  background-color: colorLight
+  visibility: hidden
+
+// ------------------------------------------------------------------
+// HOVERBOX
+
+// only show the hover box when video is playing
+.vjs-playing
+  .vjs-hoverbox
+    display: block
+
+
+.vjs-hoverbox
+  display: none
+  width: hbWidth
+  height: hbHeight
+  position: absolute
+  right: 100px
+  bottom: 100px
+  font-size: fontSize
+  background: rgba(colorLight, 0.1)
+  border: solid hbBorder rgba(colorLight, 0.2)
+  border-radius: 50%
+  cursor: pointer
+  opacity: 0.2
+  transition: all 0.3s linear
+
+  &:before
+    hbMarker()
+
+  &:after
+    hbMarker()
+    transform-origin: 50% 50%
+    top: 50%
+    left: 50%
+    transform: translate(50%, 50%)
+    width: 2px
+    height: 2px
+    margin-top: -1px
+    margin-left: -1px
+    z-index: 1
+    border-radius: 50%
+    border: solid 0px colorLight
+
+  &.counting
+    opacity: 0.8
+    animation: fadeIn 1s ease-in 0s infinite alternate, fadeIn 0.5s ease-in 0s infinite reverse
+
+    &:after
+      visibility: visible
+      animation: fillIn 2s ease-in-out 0 1 alternate
+
+    &:before
+      visibility: visible
+      animation: pulseRotate 3s cubic-bezier(0.1, 0.7, 1.0, 0.2) infinite
+
+.vjs-hoverbox-counter
+  position: absolute
+  z-index: 2
+  width: 100%
+  top: 50%
+  margin-top: -(lineHeight/2)
+  height: lineHeight
+  font-family: "Panic Sans", "inconsolata", Monaco, 'Courier New', monospace;
+  font-size: fontSize
+  font-weight: bold
+  line-height: lineHeight
+  text-transform: uppercase
+  text-align: center
+  user-select: none

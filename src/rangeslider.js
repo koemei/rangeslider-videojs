@@ -3,9 +3,9 @@
 //-- Load RangeSlider plugin in videojs
 function RangeSlider_(options){
 	var player = this;
-	
+
 	player.rangeslider=new RangeSlider(player, options);
-	
+
 	//When the DOM and the video media is loaded
 	function initialVideoFinished(event) {
 		var plugin = player.rangeslider;
@@ -13,17 +13,17 @@ function RangeSlider_(options){
 		for (var index in plugin.components) {
 			plugin.components[index].init_();
 		}
-		
+
 		if (plugin.options.hidden)
 			plugin.hide(); //Hide the Range Slider
-			
-		if(plugin.options.locked) 
+
+		if(plugin.options.locked)
 			plugin.lock(); //Lock the Range Slider
-			
-		if(plugin.options.panel==false) 
+
+		if(plugin.options.panel==false)
 			plugin.hidePanel(); //Hide the second Panel
-			
-		if(plugin.options.controlTime==false) 
+
+		if(plugin.options.controlTime==false)
 			plugin.hidecontrolTime(); //Hide the control time panel
 
 		plugin._reset();
@@ -55,8 +55,8 @@ function RangeSlider_(options){
 	}else{
 		player.one('playing', initialVideoFinished);
 	}
-	
-	
+
+
 	console.log("Loaded Plugin RangeSlider");
 }
 videojs.plugin('rangeslider', RangeSlider_);
@@ -66,27 +66,27 @@ videojs.plugin('rangeslider', RangeSlider_);
 //-- Plugin
 function RangeSlider(player,options){
 	var player = player || this;
-	
+
 	this.player = player;
-	
+
 	this.components = {}; // holds any custom components we add to the player
 
 	options = options || {}; // plugin options
-	
-	if(!options.hasOwnProperty('locked')) 
+
+	if(!options.hasOwnProperty('locked'))
 		options.locked = false; // lock slider handles
-		
-	if(!options.hasOwnProperty('hidden')) 
-		options.hidden = true; // hide slider handles
-		
-	if(!options.hasOwnProperty('panel')) 
+
+	if(!options.hasOwnProperty('hidden'))
+		options.hidden = false; // hide slider handles
+
+	if(!options.hasOwnProperty('panel'))
 		options.panel = true; // Show Second Panel
-		
-	if(!options.hasOwnProperty('controlTime')) 
-		options.controlTime = true; // Show Control Time to set the arrows in the edition
-	
+
+	if(!options.hasOwnProperty('controlTime'))
+		options.controlTime = false; // Show Control Time to set the arrows in the edition
+
 	this.options = options;
-	
+
 	this.init();
 }
 
@@ -96,20 +96,20 @@ RangeSlider.prototype = {
 	init:function(){
 		var player = this.player || {};
 		console.log(player);
-		
+
 		this.updatePrecision = 3;
-		
+
 		//position in second of the arrows
 		this.start = 0;
 		this.end = 0;
-		
+
 		//components of the plugin
 		var controlBar = player.controlBar;
 		var seekBar = controlBar.progressControl.seekBar;
 		this.components.RSTimeBar = seekBar.RSTimeBar;
 		this.components.ControlTimePanel = controlBar.ControlTimePanel;
-		
-		//Save local component 
+
+		//Save local component
 		this.rstb = this.components.RSTimeBar;
 		this.box = this.components.SeekRSBar = this.rstb.SeekRSBar;
 		this.bar = this.components.SelectionBar = this.box.SelectionBar;
@@ -121,7 +121,7 @@ RangeSlider.prototype = {
 		this.ctp = this.components.ControlTimePanel;
 		this.ctpl = this.components.ControlTimePanelLeft = this.ctp.ControlTimePanelLeft;
 		this.ctpr = this.components.ControlTimePanelRight = this.ctp.ControlTimePanelRight;
-		
+
 	},
 	lock: function() {
 		this.options.locked = true;
@@ -153,12 +153,12 @@ RangeSlider.prototype = {
 	showPanel:function(){
 		this.options.panel = true;
 		if (typeof this.tp !='undefined')
-			videojs.removeClass(this.tp.el_, 'disable');			
+			videojs.removeClass(this.tp.el_, 'disable');
 	},
 	hidePanel:function(){
 		this.options.panel = false;
 		if (typeof this.tp !='undefined')
-			videojs.addClass(this.tp.el_, 'disable');	
+			videojs.addClass(this.tp.el_, 'disable');
 	},
 	showcontrolTime:function(){
 		this.options.controlTime = true;
@@ -173,7 +173,7 @@ RangeSlider.prototype = {
 	setValue: function(index, seconds, writeControlTime) {
 		//index = 0 for the left Arrow and 1 for the right Arrow. Value in seconds
 		var writeControlTime = typeof writeControlTime!='undefined'?writeControlTime:true;
-		
+
 		var percent = this._percent(seconds);
 		var isValidIndex = (index === 0 || index === 1);
 		var isChangeable = !this.locked;
@@ -183,9 +183,9 @@ RangeSlider.prototype = {
 	setValues: function(start, end, writeControlTime) {
 		//index = 0 for the left Arrow and 1 for the right Arrow. Value in seconds
 		var writeControlTime = typeof writeControlTime!='undefined'?writeControlTime:true;
-		
+
 		this._reset();
-		
+
 		this._setValuesLocked(start,end,writeControlTime);
 	},
 	getValues: function() { //get values in seconds
@@ -194,7 +194,7 @@ RangeSlider.prototype = {
 		end = this.end || this._getArrowValue(1);
 		return {start:start, end:end};
 	},
-	playBetween: function(start, end,showRS) {
+	playBetween: function(start, end, showRS) {
 		showRS = typeof showRS == 'undefined'?true:showRS;
 		this.player.currentTime(start);
 		this.player.play();
@@ -205,7 +205,7 @@ RangeSlider.prototype = {
 			this.hide();
 		}
 		this._setValuesLocked(start,end);
-		
+
 		this.bar.activatePlay(start,end);
 	},
     loop: function (start, end, show) {
@@ -240,13 +240,13 @@ RangeSlider.prototype = {
 	_getArrowValue: function(index) {
 		var index = index || 0;
 		var duration = this.player.duration();
-		
+
 		duration = typeof duration == 'undefined'? 0 : duration;
-		
+
 		var percentage = this[index === 0? "left" : "right"].el_.style.left.replace("%","");
 		if (percentage == "")
 			percentage = index === 0? 0 : 100;
-			
+
 		return videojs.round(this._seconds(percentage / 100),this.updatePrecision-1);
 	},
 	_percent: function(seconds) {
@@ -256,7 +256,7 @@ RangeSlider.prototype = {
 		}
 		return Math.min(1, Math.max(0, seconds / duration));
 	},
-	_seconds: function(percent) { 
+	_seconds: function(percent) {
 		var duration = this.player.duration();
 		if(isNaN(duration)) {
 			return 0;
@@ -290,7 +290,7 @@ RangeSlider.prototype = {
 			newSec = s.value,
 			obj, objNew, objOld;
 		index = index || 0;
-		
+
 		if (newHour != timeOld[0]){
 			obj = h;
 			objNew = newHour;
@@ -303,22 +303,22 @@ RangeSlider.prototype = {
 			obj = s;
 			objNew = newSec;
 			objOld = timeOld[2];
-		}else{	
+		}else{
 			return false;
 		}
-	
+
 		var duration = this.player.duration() || 0,
 			durationSel;
-		
+
 		var intRegex = /^\d+$/;//check if the objNew is an integer
 		if(!intRegex.test(objNew) || objNew>60){
 			objNew = objNew ==""?"":objOld;
 		}
-	
+
 		newHour = newHour == ""?0:newHour;
 		newMin = newMin == ""?0:newMin;
 		newSec = newSec == ""?0:newSec;
-	
+
 		durationSel = videojs.TextTrack.prototype.parseCueTime(newHour+":"+newMin+":"+newSec);
 		if (durationSel > duration){
 			obj.value = objOld;
@@ -335,7 +335,7 @@ RangeSlider.prototype = {
 				obj.style.border = "1px solid red";
 			}
 		}else{
-			
+
 			var oldTimeRight = this.ctpr.el_.children,
 				durationSelRight = videojs.TextTrack.prototype.parseCueTime(oldTimeRight[0].value+":"+oldTimeRight[1].value+":"+oldTimeRight[2].value);
 			if (durationSel > durationSelRight){
@@ -492,7 +492,7 @@ videojs.SeekRSBar.prototype.createEl = function(){
 videojs.SeekRSBar.prototype.onMouseDown = function(event) {
 	event.preventDefault();
 	videojs.blockTextSelection();
-	
+
 	if(!this.rs.options.locked) {
 		videojs.on(document, "mousemove", videojs.bind(this,this.onMouseMove));
 		videojs.on(document, "mouseup", videojs.bind(this,this.onMouseUp));
@@ -506,12 +506,12 @@ videojs.SeekRSBar.prototype.onMouseUp = function(event) {
 
 videojs.SeekRSBar.prototype.onMouseMove = function(event) {
 	var left = this.calculateDistance(event);
-	
+
 	if (this.rs.left.pressed)
 		this.setPosition(0,left);
 	else if (this.rs.right.pressed)
 		this.setPosition(1,left);
-		
+
 	//Fix a problem with the presition in the display time
 	var currentTimeDisplay = this.player_.controlBar.currentTimeDisplay.content;
 	currentTimeDisplay.innerHTML = '<span class="vjs-control-text">Current Time </span>'+vjs.formatTime(this.rs._seconds(left), this.player_.duration());
@@ -521,19 +521,19 @@ videojs.SeekRSBar.prototype.setPosition = function(index,left,writeControlTime) 
 	var writeControlTime = typeof writeControlTime!='undefined'?writeControlTime:true;
 	//index = 0 for left side, index = 1 for right side
 	var index = index || 0;
-	
+
 	// Position shouldn't change when handle is locked
 	if(this.rs.options.locked)
 		return false;
 
 	// Check for invalid position
-	if(isNaN(left)) 
+	if(isNaN(left))
 		return false;
-	
+
 	// Check index between 0 and 1
 	if(!(index === 0 || index === 1))
 		return false;
-		
+
 	// Alias
 	var ObjLeft = this.rs.left.el_,
 		ObjRight = this.rs.right.el_,
@@ -542,14 +542,14 @@ videojs.SeekRSBar.prototype.setPosition = function(index,left,writeControlTime) 
 		tpl = this.rs.tpl.el_,
 		bar = this.rs.bar,
 		ctp = this.rs[index === 0 ? 'ctpl' : 'ctpr'].el_;
-	
+
 	//Check if left arrow is passing the right arrow
 	if ((index === 0 ?bar.updateLeft(left):bar.updateRight(left))){
 		Obj.style.left = (left * 100) + '%';
 		index === 0 ?bar.updateLeft(left):bar.updateRight(left);
-		
+
 		this.rs[index === 0 ? 'start' : 'end'] = this.rs._seconds(left);
-	
+
 		//Fix the problem  when you press the button and the two arrow are underhand
 		//left.zIndex = 10 and right.zIndex=20. This is always less in this case:
 		if (index === 0){
@@ -558,7 +558,7 @@ videojs.SeekRSBar.prototype.setPosition = function(index,left,writeControlTime) 
 			else
 				ObjLeft.style.zIndex = 10;
 		}
-		
+
 		//-- Panel
 		var TimeText = videojs.formatTime(this.rs._seconds(left)),
 			tplTextLegth = tpl.children[0].innerHTML.length;
@@ -579,16 +579,16 @@ videojs.SeekRSBar.prototype.setPosition = function(index,left,writeControlTime) 
 			MaxP = this.player_.isFullScreen?95:91;
 			MinP = this.player_.isFullScreen?0.1:0.5;
 		}
-		
+
 		if (index===0){
 			tpl.style.left = Math.max(MinP,Math.min(MaxP,(left * 100 - MaxDisP/2))) + '%';
-			
+
 			if ((tpr.style.left.replace("%","") - tpl.style.left.replace("%",""))<=MaxDisP)
 				tpl.style.left = Math.max(MinP,Math.min(MaxP,tpr.style.left.replace("%","")-MaxDisP)) + '%';
 			tpl.children[0].innerHTML = TimeText;
 		}else{
 			tpr.style.left = Math.max(MinP,Math.min(MaxP,(left * 100 - MaxDisP/2))) + '%';
-			
+
 			if (((tpr.style.left.replace("%","")||100) - tpl.style.left.replace("%",""))<=MaxDisP)
 				tpr.style.left = Math.max(MinP,Math.min(MaxP,tpl.style.left.replace("%","")-0+MaxDisP)) + '%';
 			tpr.children[0].innerHTML = TimeText;
@@ -679,9 +679,9 @@ videojs.SelectionBar.prototype.onMouseUp = function(){
 videojs.SelectionBar.prototype.updateLeft = function(left) {
 	var rightVal = this.rs.right.el_.style.left!=''?this.rs.right.el_.style.left:100;
 	var right = parseFloat(rightVal) / 100;
-	
+
 	var width = videojs.round((right - left),this.rs.updatePrecision); //round necessary for not get 0.6e-7 for example that it's not able for the html css width
-	
+
 	//(right+0.00001) is to fix the precision of the css in html
 	if(left <= (right+0.00001)) {
 			this.rs.bar.el_.style.left = (left * 100) + '%';
@@ -690,13 +690,13 @@ videojs.SelectionBar.prototype.updateLeft = function(left) {
 	}
 	return false;
 };
-		
+
 videojs.SelectionBar.prototype.updateRight = function(right) {
 	var leftVal = this.rs.left.el_.style.left!=''?this.rs.left.el_.style.left:0;
 	var left = parseFloat(leftVal) / 100;
-	
+
 	var width = videojs.round((right - left),this.rs.updatePrecision);//round necessary for not get 0.6e-7 for example that it's not able for the html css width
-	
+
 	//(right+0.00001) is to fix the precision of the css in html
 	if((right+0.00001) >= left) {
 		this.rs.bar.el_.style.width = (width * 100) + '%';
@@ -709,9 +709,9 @@ videojs.SelectionBar.prototype.updateRight = function(right) {
 videojs.SelectionBar.prototype.activatePlay = function(start,end){
 	this.timeStart = start;
 	this.timeEnd = end;
-	
+
 	this.suspendPlay();
-	
+
 	this.player_.on("timeupdate", videojs.bind(this,this._processPlay));
 };
 
@@ -873,7 +873,7 @@ videojs.TimePanel.prototype.createEl = function(){
 
 
 /**
- * This is the left time panel 
+ * This is the left time panel
  * @param {videojs.Player|Object} player
  * @param {Object=} options
  * @constructor
@@ -898,7 +898,7 @@ videojs.TimePanelLeft.prototype.createEl = function(){
 
 
 /**
- * This is the right time panel 
+ * This is the right time panel
  * @param {videojs.Player|Object} player
  * @param {Object=} options
  * @constructor
@@ -943,10 +943,10 @@ videojs.ControlTimePanel.prototype.init_ = function(){
 videojs.ControlTimePanel.prototype.options_ = {
 	children: {
 		'ControlTimePanelLeft': {},
-		'ControlTimePanelRight': {},
-		'HoverBox': {}
+		'ControlTimePanelRight': {}
 	}
 };
+
 
 videojs.ControlTimePanel.prototype.createEl = function(){
 	return videojs.Component.prototype.createEl.call(this, 'div', {
@@ -966,7 +966,7 @@ videojs.ControlTimePanel.prototype.enable = function(enable){
 
 
 /**
- * This is the control left time panel 
+ * This is the control left time panel
  * @param {videojs.Player|Object} player
  * @param {Object=} options
  * @constructor
@@ -1005,7 +1005,7 @@ videojs.ControlTimePanelLeft.prototype.onKeyUp = function(event) {
 
 
 /**
- * This is the control right time panel 
+ * This is the control right time panel
  * @param {videojs.Player|Object} player
  * @param {Object=} options
  * @constructor
