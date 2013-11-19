@@ -92,7 +92,7 @@
 
   // -- Helper variables and function for mouseover box countdown
 
-  // TODO: make some of those plugin options
+  // TODO: Refactor these static values as plugin Options
 
   // TODO : what is this? (add code review message in github)
   videojs.HoverBox.prototype.timer = 1.5;
@@ -118,9 +118,7 @@
   // this is a method to adjust the highlight hover animation in the plugin
   // TODO: Clean up this function.
   videojs.HoverBox.prototype.countDown = function () {
-    var _this = this;
-
-    el = this.element;
+    var el = this.element;
 
     elCounter = this.elementCounter;
 
@@ -128,31 +126,41 @@
       $(el)
         .removeClass('active')
         .addClass('counting');
-      $(elCounter).html("highlighting");
+      $(elCounter).html("Highlighting");
       this.timer -= this.countDownInterval/1000;
     }
     else if (this.timer === 0) { // if the timer equals zero, change the innerHTML and decrement timer
-      $(elCounter).html('got it!');
+      $(elCounter).html('Don\'t move!');
       this.timer -= this.countDownInterval/1000;
       // TODO: remove the final else block and adjust the animation so it ends at timer === 0...
     } else { // stop the timer by clearing the interval
       clearInterval(this.interval);
-      setTimeout(function(){ // 1 second after timer stops, reset the counter and HTML
-        _this.reset.call(_this);
-      }, 1000);
+      $(el).addClass('counting-done');
+      $(elCounter).html('Clipping!');
     }
   };
 
-  // Cleanup the animation
+  videojs.HoverBox.prototype.endClip = function(){
+      $(this.element).removeClass('counting');
+      clearInterval(this.interval);
+      clearTimeout(this.timeout);
+      this.set = false;
+
+    if ( $(event.srcElement).hasClass('counting-done') ) {
+      this.endTime = this.player_.currentTime();
+      this.set = false;
+      console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
+    }
+    this.reset.call(this);
+  };
+
+  // Rest all hoverbox attributes
   videojs.HoverBox.prototype.reset = function(){
     el = this.element;
       $(el)
         .removeClass('counting')
-        .addClass('counting-done');
       $(this.elementCounter).html("highlight");
-      $(this.elementCounter).addClass('counting-done');
     this.timer = this.duration;
-
     return this;
   };
 
@@ -170,9 +178,6 @@
 
     $(this.element).append(this.elementCounter);
 
-    // reset the hoverbox
-    this.reset.call(this);
-
     // on mouse enter: start the countdown and init the timeout
     this.element.onmouseenter = function() {
       $(this.element).removeClass('counting-done');
@@ -182,13 +187,9 @@
         this.countDown.call(this, this.element);
       }.bind(this), this.countDownInterval);
 
-      console.log('interval 135', this.interval);  // TODO: remove this
-      console.log('time now', this.player_.currentTime());  // TODO: remove this
-
       this.timeout = setTimeout(function() {
         if (!this.set) {
           this.set = true;
-          console.log('set is now true');  // TODO: remove this
           // logic to set highlight start time before the user took action
           if (this.player_.currentTime() < this.buffer) {
             this.startTime = 0;
@@ -201,27 +202,9 @@
 
     // on mouse leave: reset the animation, clear timeout and countdown 
     this.element.onmouseleave = function(event) {
-      console.log('mouseout');  // TODO: remove this
-      $(this.element).removeClass('counting');
-      this.reset.call(this);
-      clearInterval(this.interval);
-      clearTimeout(this.timeout);
+      this.endClip.call(this);
     }.bind(this);
 
-    // on click: create the highlight
-    this.element.onclick = function(event) {  // TODO: eventually we'll need to make a post request to the Koemei API in this method
-      // do not pause the player
-      event.preventDefault();
-
-      if ( $(event.srcElement).hasClass('counting-done') ) {
-        this.endTime = this.player_.currentTime();
-        this.set = false;
-        this.reset.call(this);
-        // TODO: we do "append" above, why is this .html? not the same behavior
-        //$(this.element).html(this.elementCounter);
-        console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
-      }
-    }.bind(this);
     return this.element;
   };
 

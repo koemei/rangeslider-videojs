@@ -29,23 +29,6 @@
   <body style="margin:10px">
     <h1 class="title">Clip a learning moment</h1>
 
-		<!-- <video id="vid1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="264"
-			poster="http://video-js.zencoder.com/oceans-clip.png"
-			data-setup=''>
-				<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-				<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-				<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-		</video> -->
-
-<!-- 	<video 
-		id="vid1" 
-		class="video-js vjs-default-skin" 
-		controls preload="auto"
-		width="640" height="360" 
-		poster="http://img.youtube.com/vi/bTUrWYv2vtU/0.jpg" 
-		data-setup='{ "techOrder": ["youtube"], "src":"http://www.youtube.com/watch?v=bTUrWYv2vtU" }'>
-	</video> -->
-
 	<video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"></video>
 
   <script>
@@ -64,19 +47,24 @@
 
 	<script>
 
+
 		$( document ).ready(function() {
 
+			var options ={hidden:false, locked:false, panel:false};
+			mplayer = videojs("vid1");
+			mplayer.rangeslider(options);
+			mplayer.hoverbox();
+			mplayer.addChild('HoverBox');
 			var domain = $(location).attr('href');
-
-			// TODO: create a hoverbox.js option 'disable' that we pass here to ensure people don't create clips on clip landing pages... ???
 
 			var playClip = function(url) {
 				var arr = url.split('=');
 				var start = parseFloat(arr[1]);
 				var end = parseFloat(arr[2]);
-				console.log(start, end);
-				console.log(mplayer);
-				mplayer.playBetween(start,end)
+				// mplayer.rangeslider.start = start;
+				// mplayer.rangeslider.end = end;
+				mplayer.rangeslider.playBetween(start, end).call(mplayer);
+				mplayer.setValueSlider(start, end);
 			};
 
 			if (domain.indexOf('?start') < domain.indexOf('&end')) {
@@ -88,11 +76,6 @@
 		});
 		//Example of options ={hidden:false,locked:true,panel:false}
 
-		var options ={hidden:false, locked:false},
-			mplayer=videojs("vid1");
-			mplayer.rangeslider(options);
-			mplayer.hoverbox();
-			mplayer.addChild('HoverBox');
 
 		function playBetween(){
 			var start = document.getElementById('Start').value,
