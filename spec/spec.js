@@ -1,14 +1,3 @@
-var system = require('system'),
-    page = require('webpage').create();
-
-
-    page.open(localhost:3000, function (status) {
-    page.evaluate(function () {
-        return document.title;
-    }, function(result){
-        console.log('Page title is ' + title);
-    }); 
-});
 
 
 describe("DOM Tests", function () {
