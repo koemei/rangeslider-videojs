@@ -32,10 +32,31 @@
 	<video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"></video>
 
   <script>
-	  videojs('vid1', { "techOrder": ["youtube"], "src": "http://www.youtube.com/watch?v=bTUrWYv2vtU" }).ready(function() {
+	  videojs('vid1', { "techOrder": ["youtube"], "src": "//youtube.com/watch?v=bTUrWYv2vtU" }).ready(function() {
 	    // Detect when the YouTube API is ready
 	    this.on('apiready', function() {
 	      console.log('YouTube API is ready!');
+				var options ={hidden:false, locked:false, panel:false};
+				mplayer = videojs("vid1");
+				mplayer.rangeslider(options);
+				mplayer.hoverbox();
+				mplayer.addChild('HoverBox');
+				var domain = $(location).attr('href');
+
+				var playClip = function(url) {
+					var arr = url.split('=');
+					var start = parseFloat(arr[1]);
+					var end = parseFloat(arr[2]);
+					// mplayer.rangeslider.start = start;
+					// mplayer.rangeslider.end = end;
+					mplayer.rangeslider.playBetween(start, end).call(mplayer);
+					mplayer.setValueSlider(start, end);
+				};
+
+				if (domain.indexOf('?start') < domain.indexOf('&end')) {
+					suffix = domain.split('/').pop();
+					playClip(suffix);
+				}
 	    });
 
 	    // Cue a video using ended event
@@ -43,37 +64,7 @@
 	      this.src('http://www.youtube.com/watch?v=bTUrWYv2vtU');
 	    });
 	  });
-  </script>
 
-	<script>
-
-
-		$( document ).ready(function() {
-
-			var options ={hidden:false, locked:false, panel:false};
-			mplayer = videojs("vid1");
-			mplayer.rangeslider(options);
-			mplayer.hoverbox();
-			mplayer.addChild('HoverBox');
-			var domain = $(location).attr('href');
-
-			var playClip = function(url) {
-				var arr = url.split('=');
-				var start = parseFloat(arr[1]);
-				var end = parseFloat(arr[2]);
-				// mplayer.rangeslider.start = start;
-				// mplayer.rangeslider.end = end;
-				mplayer.rangeslider.playBetween(start, end).call(mplayer);
-				mplayer.setValueSlider(start, end);
-			};
-
-			if (domain.indexOf('?start') < domain.indexOf('&end')) {
-				suffix = domain.split('/').pop();
-				playClip(suffix);
-			}
-
-
-		});
 		//Example of options ={hidden:false,locked:true,panel:false}
 
 

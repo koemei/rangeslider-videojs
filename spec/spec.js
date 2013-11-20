@@ -2,7 +2,7 @@ var system = require('system'),
     page = require('webpage').create();
 
 
-    page.open(localhost:3000, function (status) {
+page.open(google.com, function (status) {
     page.evaluate(function () {
         return document.title;
     }, function(result){
