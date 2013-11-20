@@ -10,7 +10,6 @@ page.open(google.com, function (status) {
     }); 
 });
 
-
 describe("DOM Tests", function () {
 
     var el = document.createElement("div");

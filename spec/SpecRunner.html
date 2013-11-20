@@ -1,22 +1,46 @@
+<!doctype html>
 <html>
-    <head>
-        <title> Tests </title>
-        <link rel="stylesheet" href="./node_modules/mocha/mocha.css" />
-    </head>
-    <body>
-        <div id="mocha"></div>
-        <script src="../node_modules/mocha/mocha.js"></script>
-        <script src="../node_modules/chai/chai.js"></script>
-        <script src="../node_modules/requirejs/require.js"></script>
-        <script>
-            mocha.ui('bdd'); 
-            mocha.reporter('html');
-            var expect = chai.expect;
-        </script>
-        <script src="spec.js"></script>
-        <script>
-            if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
-            else { mocha.run(); }
-        </script>
-    </body>
+<head>
+  <meta charset="utf-8">
+  <title>Jasmine Spec Runner</title>
+
+  <link rel="stylesheet" type="text/css" href=".grunt/grunt-contrib-jasmine/jasmine.css">
+
+
+  
+  <script src=".grunt/grunt-contrib-jasmine/phantom-polyfill.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/jasmine.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/jasmine-html.js"></script>
+
+
+  <script src="lib/video-js/video.dev.js"></script>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+  <!--YouTube Plugin-->
+  <script src="lib/vjs.youtube.js"></script>
+
+  <!--HoverBox Plugin -->
+  <script src="src/hoverbox.js"></script>
+
+  <!--RangeSlider Plugin-->
+  <script src="src/rangeslider.js"></script>
+
+  
+  <script src="build/rangeslider.min.js"></script>
+  
+  <script src="spec/HoverSpec.js"></script>
+  
+  <script src="spec/spec.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/reporter.js"></script>
+  
+  <script src=".grunt/grunt-contrib-jasmine/jasmine-helper.js"></script>
+  
+
+</head>
+<body>
+</body>
 </html>

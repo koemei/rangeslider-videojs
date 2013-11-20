@@ -61,13 +61,24 @@ module.exports = function(grunt) {
         files: "<%= stylus.app.files[0].cwd %>/**/*.styl",
         tasks: ["compile", "notify:compiled"]
       }
+    },
+
+    jasmine: {
+      all: {
+        src: 'build/*.js',
+        options: {
+          template: 'spec/SpecRunner.html',
+          specs: 'spec/**/*.js'
+        }
+      }
     }
   });
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.registerTask("compile", [
-    "stylus"
+    "stylus",
+    "jasmine"
   ]);
 
   grunt.registerTask("default", [
