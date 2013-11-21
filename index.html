@@ -11,7 +11,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
 		<!--YouTube Plugin-->
-		<script src="lib/vjs.youtube.js"></script>
+		<script src="lib/media.youtube.js"></script>
 
 		<!--RangeSlider Plugin-->
 		<script src="src/rangeslider.js"></script>
@@ -32,15 +32,16 @@
 	<video id="vid1" src="" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360"></video>
 
   <script>
+
+
 	  videojs('vid1', { "techOrder": ["youtube"], "src": "//youtube.com/watch?v=bTUrWYv2vtU" }).ready(function() {
 	    // Detect when the YouTube API is ready
-	    this.on('apiready', function() {
-	      console.log('YouTube API is ready!');
-				var options ={hidden:false, locked:false, panel:false};
-				mplayer = videojs("vid1");
-				mplayer.rangeslider(options);
-				mplayer.hoverbox();
-				mplayer.addChild('HoverBox');
+
+	    // Cue a video using ended event
+	    this.one('ended', function() {
+	      this.src('http://youtube.com/watch?v=bTUrWYv2vtU');
+	      console.log('youtube API ready');
+		  });
 				var domain = $(location).attr('href');
 
 				var playClip = function(url) {
@@ -56,16 +57,16 @@
 				if (domain.indexOf('?start') < domain.indexOf('&end')) {
 					suffix = domain.split('/').pop();
 					playClip(suffix);
-				}
-	    });
-
-	    // Cue a video using ended event
-	    this.one('ended', function() {
-	      this.src('//youtube.com/watch?v=bTUrWYv2vtU');
-	    });
+		    };
 	  });
 
-		//Example of options ={hidden:false,locked:true,panel:false}
+  	//Example of options ={hidden:false,locked:true,panel:false}
+
+		var options ={hidden:false, locked:false, panel:false};
+		mplayer = videojs("vid1");
+		mplayer.rangeslider(options);
+		mplayer.hoverbox();
+		mplayer.addChild('HoverBox');
 
 
 		function playBetween(){
@@ -116,6 +117,7 @@
 				mplayer.hideControlTime();
 		}
 	</script>
+
     <div id="fieldSelection">
 		<legend>Actions</legend>
 		<div class="button" onClick="showhide()">Show/Hide RS</div>
