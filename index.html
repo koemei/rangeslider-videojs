@@ -15,11 +15,7 @@
 
 		<!--RangeSlider Plugin-->
 		<script src="src/rangeslider.js"></script>
-		<link href="build/rangeslider.min.css" rel="stylesheet">
-
-		<!--HoverBox Plugin -->
-		<script src="src/hoverbox.js"></script>
-		<link href="src/hoverbox.css" rel="stylesheet">
+		<link href="src/rangeslider.css" rel="stylesheet">
 
 	  <!--Demo CSS-->
 		<link href="demo.css" rel="stylesheet">
@@ -40,24 +36,11 @@
 	    // Cue a video using ended event
 	    this.one('ended', function() {
 	      this.src('http://youtube.com/watch?v=bTUrWYv2vtU');
-	      console.log('youtube API ready');
 		  });
-				var domain = $(location).attr('href');
-
-				var playClip = function(url) {
-					var arr = url.split('=');
-					var start = parseFloat(arr[1]);
-					var end = parseFloat(arr[2]);
-					// mplayer.rangeslider.start = start;
-					// mplayer.rangeslider.end = end;
-					mplayer.rangeslider.playBetween(start, end).call(mplayer);
-					mplayer.setValueSlider(start, end);
-				};
 
 				if (domain.indexOf('?start') < domain.indexOf('&end')) {
-					suffix = domain.split('/').pop();
-					playClip(suffix);
-		    };
+					$('body').prepend('<button type="button" class="btn btn-default" onclick="setClipFromQueryParams()">Set Clip From URL</button>')
+				};
 	  });
 
   	//Example of options ={hidden:false,locked:true,panel:false}
@@ -65,76 +48,30 @@
 		var options ={hidden:false, locked:false, panel:false};
 		mplayer = videojs("vid1");
 		mplayer.rangeslider(options);
-		mplayer.hoverbox();
 		mplayer.addChild('HoverBox');
 
+		var domain = $(location).attr('href');
 
-		function playBetween(){
-			var start = document.getElementById('Start').value,
-				end = document.getElementById('End').value;
-			mplayer.playBetween(start,end);
-		}
+		var playClip = function(urlSuffix) {
+			var arr = urlSuffix.split('=');
+			var start = parseFloat(arr[1]);
+			var end = parseFloat(arr[2]);
+			// mplayer.rangeslider.start = start;
+			// mplayer.rangeslider.end = end;
+			mplayer.playBetween(start, end));
+		};
 
-	    function loopBetween() {
-	        var start = document.getElementById('Start').value;
-	        var end = document.getElementById('End').value;
-	        mplayer.loopBetween(start, end);
-	    }
+  	var setClipFromQueryParams = function(){
+			suffix = domain.split('/').pop();
 
-		function getValues(){
-			var values = mplayer.getValueSlider();
-            console.log(values);
-			document.getElementById('Start').value=videojs.round(values.start,2);
-			document.getElementById('End').value=videojs.round(values.end,2);
-		}
+			playClip(suffix);
+		};
 
-		function showhide(){
-			var plugin=mplayer.rangeslider.options;
-			if(plugin.hidden)
-				mplayer.showSlider();
-			else
-				mplayer.hideSlider();
-		}
-		function lockunlock(){
-			var plugin=mplayer.rangeslider.options;
-			if(plugin.locked)
-				mplayer.unlockSlider();
-			else
-				mplayer.lockSlider();
-		}
-		function showhidePanel(){
-			var plugin=mplayer.rangeslider.options;
-			if(!plugin.panel)
-				mplayer.showSliderPanel();
-			else
-				mplayer.hideSliderPanel();
-		}
-		function showhideControlTime(){
-			var plugin=mplayer.rangeslider.options;
-			if(!plugin.controlTime)
-				mplayer.showControlTime();
-			else
-				mplayer.hideControlTime();
-		}
 	</script>
 
-    <div id="fieldSelection">
-		<legend>Actions</legend>
-		<div class="button" onClick="showhide()">Show/Hide RS</div>
-		<div class="button" onClick="lockunlock()">Lock/Unlock RS</div>
-		<div class="button" onClick="showhidePanel()">show/hide Panel</div>
-		<div class="button" onClick="showhideControlTime()">show/hide ControlTime</div>
+	 <div class="form-group">
+		Share link: <input type="text" style='width: 400px' value="" id="share-link" class="form-control">
 	</div>
-	<div id="hover">
-		<div class="button" onClick="getValues()">get values!</div>
-	</div>
-	<div id="fieldSelection">
-		<legend>Select a section of the video</legend>
-		<div class="button" onClick="playBetween()">Play Between</div>
-        <div class="button" onClick="loopBetween()">Loop Between</div>
-		<div class="button" onClick="getValues()">Get Arrow Values</div><br/>
-		Start (seconds):<input type="text" value="2" id="Start">
-		End (seconds): <input type="text" value="5" id="End">
-	</div>
+
   </body>
 </html>
