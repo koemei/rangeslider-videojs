@@ -195,6 +195,7 @@ RangeSlider.prototype = {
 		return {start:start, end:end};
 	},
 	playBetween: function(start, end, showRS) {
+		console.log('fired');
 		showRS = typeof showRS == 'undefined'?true:showRS;
 		this.player.currentTime(start);
 		this.player.play();
