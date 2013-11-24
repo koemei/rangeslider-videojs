@@ -26,7 +26,7 @@
     <h1 class="title">Clip a learning moment</h1>
 
 	<video id="vid1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
- 	</video>
+	</video>
 
   <script>
 
@@ -63,9 +63,9 @@
 			// mplayer.rangeslider.start = start;
 			// mplayer.rangeslider.end = end;
 			mplayer.play();
-			setTimeout(function () {
+			mplayer.on('play', function(){
 				mplayer.playBetween(start,end)
-			}, 1750);
+			});
 		};
 
 	</script>
