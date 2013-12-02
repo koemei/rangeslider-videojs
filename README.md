@@ -4,6 +4,10 @@ HoverBox-videojs
 
 This is a plugin for Video JS player. The aim of this plugin is to use a minimal in-video interaction to create a clip of a video segment without interrupting the viewing experience.
 
+This plugin is modified from @danielcebrian's work on on the RangeSlider here: 
+
+https://github.com/danielcebrian/rangeslider-videojs
+
 ##Live-Demo
 
 There is a demo here:
