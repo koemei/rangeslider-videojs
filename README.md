@@ -1,14 +1,18 @@
-Rangeslider-videojs
+HoverBox-videojs
 ==================
-##Ranger Slider Plugin for Video JS Player
+##The HoverBox Plugin for Video JS Player
 
-rangeslider.js is a plugin for Video JS player. The aim of this plugin is to create range slider to select a region of a video in video-js.
+This is a plugin for Video JS player. The aim of this plugin is to use a minimal in-video interaction to create a clip of a video segment without interrupting the viewing experience.
+
+This plugin is modified from @danielcebrian's work on on the RangeSlider here: 
+
+https://github.com/danielcebrian/rangeslider-videojs
 
 ##Live-Demo
 
-There is a demo of the range slider plugin in the next webpage:
+There is a demo here:
 
-http://danielcebrian.com/rangeslider/demo.html
+https://test.koemei.comdemo/rangeslider/
 
 ##Installation
 
