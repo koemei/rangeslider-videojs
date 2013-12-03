@@ -149,8 +149,10 @@
     if ( $(event.srcElement).hasClass('counting-done') ) {
       this.endTime = this.player_.currentTime();
       this.set = false;
-      console.log('querystring:', $(location).attr('href') + '?start=' + this.startTime + '&end=' + this.endTime);
+      this.link = $(location).attr('href').toString() + '?start=' + this.startTime + '&end=' + this.endTime;
+                  $("#share-link").val(this.link);
     }
+
     this.reset.call(this);
   };
 
