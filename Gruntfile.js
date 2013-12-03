@@ -67,7 +67,7 @@ module.exports = function(grunt) {
       all: {
         src: 'build/*.js',
         options: {
-          template: 'spec/SpecRunner.html',
+          template: 'index.html',
           specs: 'spec/**/*.js'
         }
       }
