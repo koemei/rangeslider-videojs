@@ -270,6 +270,7 @@ RangeSlider.prototype = {
 		this._setValuesLocked(0,duration);
 	},
 	_setValuesLocked: function(start,end, writeControlTime){
+		var triggerSliderChange = typeof writeControlTime!='undefined';
 		var writeControlTime = typeof writeControlTime!='undefined'?writeControlTime:true;
 		if(this.options.locked) {
 			this.unlock();//It is unlocked to change the bar position. In the end it will return the value.
@@ -279,6 +280,11 @@ RangeSlider.prototype = {
 		}else{
 			this.setValue(0,start,writeControlTime);
 			this.setValue(1,end,writeControlTime);
+		}
+		
+		// Trigger slider change
+		if (triggerSliderChange) {
+			this._triggerSliderChange();
 		}
 	},
 	_checkControlTime: function(index,TextInput,timeOld){
@@ -327,6 +333,9 @@ RangeSlider.prototype = {
 			obj.value = objNew;
 			h.style.border = m.style.border = s.style.border = "1px solid transparent";
 			this.setValue(index,durationSel,false);
+			
+			// Trigger slider change
+			this._triggerSliderChange();
 		}
 		if (index===1){
 			var oldTimeLeft = this.ctpl.el_.children,
@@ -343,6 +352,9 @@ RangeSlider.prototype = {
 			}
 		}
 	},
+	_triggerSliderChange: function(){
+		this.player.trigger("sliderchange");
+	}
 };
 
 
@@ -515,6 +527,11 @@ videojs.SeekRSBar.prototype.onMouseMove = function(event) {
 	//Fix a problem with the presition in the display time
 	var currentTimeDisplay = this.player_.controlBar.currentTimeDisplay.content;
 	currentTimeDisplay.innerHTML = '<span class="vjs-control-text">Current Time </span>'+vjs.formatTime(this.rs._seconds(left), this.player_.duration());
+	
+	// Trigger slider change
+	if (this.rs.left.pressed||this.rs.right.pressed) {
+		this.rs._triggerSliderChange();
+	}
 };
 
 videojs.SeekRSBar.prototype.setPosition = function(index,left,writeControlTime) {
