@@ -12,12 +12,11 @@ https://github.com/danielcebrian/rangeslider-videojs
 
 There is a demo here:
 
-https://test.koemei.comdemo/rangeslider/
+https://test.koemei.com/demo/rangeslider/
 
 ##Installation
 
-Add rangeslider.min.js and rangeslider.min.css CDN distributed file to your head tag, just after
-videojs:
+Add youtube-plugin, rangeslider, and hovervox files to your head tag, just after videojs:
 
 ```html
 <html>
@@ -25,9 +24,21 @@ videojs:
 		<!--Latest VideoJS-->
 		<link href="http://vjs.zencdn.net/4.1/video-js.css" rel="stylesheet">
 		<script src="lib/video.min.js"></script>
-		<!--RangeSlider Pluging-->
+		
+		<!--YouTube Plugin-->
+		<script src="lib/media.youtube.js"></script>
+
+		<!--RangeSlider Plugin-->
 		<script src="src/rangeslider.js"></script>
-		<link href="src/rangeslider.css" rel="stylesheet">
+		<link href="build/rangeslider.min.css" rel="stylesheet">
+
+		<!--HoverBox Plugin -->
+		<script src="src/hoverbox.js"></script>
+		<link href="src/hoverbox.css" rel="stylesheet">
+
+	        <!--Demo CSS-->
+		<link href="demo.css" rel="stylesheet">
+
 	</head>
 	<body>
 		...
@@ -35,27 +46,32 @@ videojs:
 
 ##Usage
 
-Load a video in video-js, as you can see in the [tutorial of video-js player](https://github.com/videojs/video.js/blob/master/docs/setup.md) 
+Load a video in video-js, as you can see in the YouTube Plugin Docs [YouTube video-js player](https://github.com/eXon/videojs-youtube/) 
 
 ```html
-<video id="vid1" class="video-js vjs-default-skin" controls preload="none" width="640" height="264"
-poster="http://video-js.zencoder.com/oceans-clip.png"
-data-setup=''>
-	<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-	<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-	<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-</video>
+ <video id="vid1" class="video-js vjs-default-skin" controls preload="auto" width="640" height="360">
+        </video>
+  <script>
+          videojs('vid1', { "techOrder": ["youtube"], "src": "//youtube.com/watch?v=bTUrWYv2vtU" }).ready(function() {
+            // Detect when the YouTube API is ready
+            console.log('YouTube API ready');
+            // Cue a video using ended event
+            this.one('ended', function() {
+              this.src('http://youtube.com/watch?v=bTUrWYv2vtU');
+                  });
+          });
 ```
 	
 In addition, to load and control the plugin from Javascript must add a few lines of javascript like:
 
 ```js
-var options = {},
-	mplayer = videojs("vid1"),
-	mplayer.rangeslider(options);
+                var options ={};
+                mplayer = videojs("vid1");
+                mplayer.rangeslider(options);
+                mplayer.hoverbox();
+                mplayer.addChild('HoverBox');
 ```
 
-The first one was to load the videojs player and the second one is to load the rangeslider plugin
 You can specify to the plugin to be loaded with the range slider open, the panel time, etc.. with the initial options. For example:
 
 locked = true/false;
