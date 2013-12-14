@@ -136,14 +136,17 @@
     } else { // stop the timer by clearing the interval
       clearInterval(this.interval);
       $(el).addClass('counting-done');
-      $(elCounter).html('Clipping!');
+      $(elCounter).html('Clip created!');
+      if (this.highlightCallback) {
+        this.highlightCallback.apply(this.highlightCallback.context, this.highlightCallback.args);
+      }
     }
   };
 
   videojs.HoverBox.prototype.setHighlightCallback = function(callback, args, context) {
     this.highlightCallback = callback;
-    this.highlightCallback.context = context;
-    this.highlightCallback.args = args;
+    this.highlightCallback.context = context || this;
+    this.highlightCallback.args = args || [];
   };
 
   videojs.HoverBox.prototype.endClip = function(){
