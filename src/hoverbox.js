@@ -140,6 +140,12 @@
     }
   };
 
+  videojs.HoverBox.prototype.setHighlightCallback = function(callback, args, context) {
+    this.highlightCallback = callback;
+    this.highlightCallback.context = context;
+    this.highlightCallback.args = args;
+  };
+
   videojs.HoverBox.prototype.endClip = function(){
       $(this.element).removeClass('counting');
       clearInterval(this.interval);
